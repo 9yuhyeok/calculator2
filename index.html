@@ -482,7 +482,7 @@
       <div class="header-row">
         <div>
           <h1>잔류 카페인 계산기</h1>
-          <div class="subtitle">섭취한 카페인이 얼마나 남아있을지 계산합니다.</div>
+          <div class="subtitle">이전에 섭취한 카페인이 체내에 얼마나 누적되었을까요?</div>
         </div>
       </div>
 
@@ -506,7 +506,7 @@
       <!-- 섭취 기록 -->
       <div class="dose-header-row">
         <div class="dose-header-row-title">카페인 섭취 기록</div>
-        <button class="btn-primary" id="addDoseBtn">+ 섭취 추가</button>
+        <button class="btn-primary" id="addDoseBtn">+ 기록 추가</button>
       </div>
 
       <div class="dose-table-wrap">
@@ -524,17 +524,17 @@
 
       <!-- 결과 -->
       <div class="result-box">
-        <div id="resultMain" class="result-value">잔류 카페인: 0</div>
+        <div id="resultMain" class="result-value">누적 잔류 카페인: 0</div>
       </div>
 
       <!-- 타임라인 -->
       <div class="timeline-section">
         <div class="section-title" style="margin-top:0;">
           <span class="dot"></span>
-          <span>시간대별 잔류 카페인 타임라인</span>
+          <span>잔류 카페인 타임라인</span>
         </div>
         <div class="timeline-wrap" id="timelineWrap">
-          <div class="timeline-empty">카페인 섭취를 추가하면 시간대별 타임라인이 표시됩니다.</div>
+          <div class="timeline-empty">카페인 섭취를 기록하면 타임라인이 표시됩니다.</div>
         </div>
         <div class="timeline-floating-date" id="timelineFloatingDate"></div>
       </div>
@@ -542,10 +542,10 @@
     </div>
   </div>
 
-  <div class="half-life-note">카페인 반감기 = 5시간으로 계산</div>
+  <div class="half-life-note">*카페인 반감기는 5시간으로 계산되었습니다.<br>실제 카페인 반감기는 개인마다 차이가 있을 수 있습니다.<br> </div>
 
   <div class="caffeine-section">
-    <div class="caffeine-title">주요 음료 및 커피 제품의 카페인 함량 (대략값)</div>
+    <div class="caffeine-title">주요 음료 및 커피 제품의 카페인 함량 (추정치)</div>
     <div class="caffeine-table-wrap">
       <table class="caffeine-table">
         <thead>
@@ -558,7 +558,7 @@
         <tbody>
         <!-- 에너지드링크 -->
         <tr class="caffeine-subheading">
-          <td colspan="3">에너지 드링크</td>
+          <td colspan="3" style="text-align: center;">에너지 드링크</td>
         </tr>
         <tr>
           <td>몬스터 에너지 355ml</td>
@@ -593,7 +593,7 @@
 
         <!--캔커피 -->
         <tr class="caffeine-subheading">
-          <td colspan="3">캔 커피</td>
+          <td colspan="3" style="text-align: center;">캔 커피</td>
         </tr>
         <tr>
           <td>조지아 마운틴블랜드</td>
@@ -618,7 +618,7 @@
 
         <!-- 스타벅스 아메리카노 -->
         <tr class="caffeine-subheading">
-          <td colspan="3">스타벅스 카페 아메리카노 (1 shot = 75 mg)</td>
+          <td colspan="3" style="text-align: center;">스타벅스 카페 아메리카노 (1 shot = 75 mg)</td>
         </tr>
         <tr>
           <td>Short</td>
@@ -643,7 +643,7 @@
 
         <!-- 스타벅스 라떼 -->
         <tr class="caffeine-subheading">
-          <td colspan="3">스타벅스 카페 라떼 (1 shot = 75 mg)</td>
+          <td colspan="3" style="text-align: center;">스타벅스 카페 라떼 (1 shot = 75 mg)</td>
         </tr>
         <tr>
           <td>Short</td>

@@ -2,10 +2,313 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <title>TEST</title>
+  <title>카페인 반감기 계산기</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f5f5f5;
+    }
+    .app {
+      max-width: 900px;
+      margin: 24px auto;
+      padding: 16px;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+    }
+    h1 {
+      font-size: 1.6rem;
+      margin-top: 0;
+      margin-bottom: 4px;
+    }
+    .subtitle {
+      color: #555;
+      font-size: 0.9rem;
+      margin-bottom: 16px;
+    }
+    .section-title {
+      font-weight: 600;
+      margin-top: 16px;
+      margin-bottom: 8px;
+    }
+    label {
+      font-size: 0.85rem;
+      margin-right: 8px;
+    }
+    input[type="number"],
+    input[type="datetime-local"],
+    input[type="text"] {
+      padding: 6px 8px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 0.9rem;
+    }
+    button {
+      border: none;
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+    .btn-primary {
+      background: #0070f3;
+      color: white;
+    }
+    .btn-outline {
+      background: white;
+      border: 1px solid #ccc;
+    }
+    .dose-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      font-size: 0.9rem;
+    }
+    .dose-table th,
+    .dose-table td {
+      padding: 6px 4px;
+      border-bottom: 1px solid #eee;
+      text-align: left;
+    }
+    .dose-table th {
+      font-weight: 600;
+      background: #fafafa;
+    }
+    .dose-table td.actions {
+      text-align: right;
+    }
+    .result-box {
+      margin-top: 16px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: #f0f4ff;
+      font-size: 0.95rem;
+    }
+    .result-main {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .tag {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      margin-left: 4px;
+    }
+    .tag-ok {
+      background: #e1fbe1;
+      color: #1c7c1c;
+    }
+    .tag-warn {
+      background: #ffe6e6;
+      color: #c03535;
+    }
+    .warn {
+      color: #c03535;
+      font-weight: 600;
+    }
+    .small {
+      font-size: 0.8rem;
+      color: #666;
+    }
+    @media (max-width: 600px) {
+      .dose-table th:nth-child(2),
+      .dose-table td:nth-child(2) {
+        display: none;
+      }
+    }
+  </style>
 </head>
 <body>
-  <h1>GitHub Pages TEST</h1>
-  <p>이 문장이 보이면 Pages 설정은 정상임.</p>
+<div class="app">
+  <h1>카페인 반감기 계산기</h1>
+  <div class="subtitle">
+    반감기(기본 5시간)를 기준으로 현재 몸에 남아 있는 카페인 양을 계산하는 도구.
+  </div>
+
+  <div>
+    <span class="section-title">기본 설정</span><br />
+    <label>
+      반감기 (시간):
+      <input type="number" id="halfLife" value="5" min="1" step="0.5" />
+    </label>
+    <label>
+      계산 시각:
+      <input type="datetime-local" id="calcTime" />
+    </label>
+    <button class="btn-outline" id="setNowBtn">지금으로 설정</button>
+  </div>
+
+  <div>
+    <div class="section-title">카페인 섭취 기록</div>
+    <button class="btn-primary" id="addDoseBtn">+ 섭취 추가</button>
+    <table class="dose-table">
+      <thead>
+      <tr>
+        <th>섭취 시각</th>
+        <th>설명(선택)</th>
+        <th>용량 (mg)</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody id="doseTbody">
+      </tbody>
+    </table>
+    <div class="small">
+      예) 아메리카노 1잔 ≈ 150 mg, 에스프레소 1샷 ≈ 80 mg 정도로 잡아서 넣으면 됨.
+    </div>
+  </div>
+
+  <div>
+    <button class="btn-primary" style="margin-top: 16px;" id="calcBtn">
+      남은 카페인 계산
+    </button>
+
+    <div class="result-box" id="resultBox" style="display:none;">
+      <div class="result-main" id="resultMain"></div>
+      <div id="resultDetail"></div>
+      <div class="small" style="margin-top:6px;">
+        * 일반적인 권장 상한은 건강한 성인 기준 하루 총 400 mg 정도로 알려져 있음.
+        이 도구는 참고용일 뿐이고, 의학적 조언을 대체하지 않아.
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  var SAFE_THRESHOLD = 400; // mg
+
+  function toLocalDateTimeValue(date) {
+    var offsetMs = date.getTimezoneOffset() * 60000;
+    var local = new Date(date.getTime() - offsetMs);
+    return local.toISOString().slice(0, 16);
+  }
+
+  function setCalcTimeNow() {
+    var now = new Date();
+    document.getElementById("calcTime").value = toLocalDateTimeValue(now);
+  }
+
+  function addDoseRow(defaultTime) {
+    var tbody = document.getElementById("doseTbody");
+
+    var tr = document.createElement("tr");
+
+    var tdTime = document.createElement("td");
+    var timeInput = document.createElement("input");
+    timeInput.type = "datetime-local";
+    timeInput.value = defaultTime || document.getElementById("calcTime").value || toLocalDateTimeValue(new Date());
+    tdTime.appendChild(timeInput);
+
+    var tdDesc = document.createElement("td");
+    var descInput = document.createElement("input");
+    descInput.type = "text";
+    descInput.placeholder = "예: 아메리카노";
+    descInput.style.width = "100%";
+    tdDesc.appendChild(descInput);
+
+    var tdMg = document.createElement("td");
+    var mgInput = document.createElement("input");
+    mgInput.type = "number";
+    mgInput.min = "0";
+    mgInput.step = "10";
+    mgInput.placeholder = "mg";
+    mgInput.style.width = "90px";
+    tdMg.appendChild(mgInput);
+
+    var tdActions = document.createElement("td");
+    tdActions.className = "actions";
+    var delBtn = document.createElement("button");
+    delBtn.className = "btn-outline";
+    delBtn.textContent = "삭제";
+    delBtn.onclick = function () { tr.remove(); };
+    tdActions.appendChild(delBtn);
+
+    tr.appendChild(tdTime);
+    tr.appendChild(tdDesc);
+    tr.appendChild(tdMg);
+    tr.appendChild(tdActions);
+
+    tbody.appendChild(tr);
+  }
+
+  function calculateCaffeine() {
+    var halfLife = parseFloat(document.getElementById("halfLife").value);
+    if (isNaN(halfLife) || halfLife <= 0) halfLife = 5;
+
+    var calcTimeInput = document.getElementById("calcTime").value;
+    var calcTime = calcTimeInput ? new Date(calcTimeInput) : new Date();
+    if (isNaN(calcTime.getTime())) calcTime = new Date();
+
+    var lambda = Math.LN2 / halfLife;
+    var rows = document.querySelectorAll("#doseTbody tr");
+    var totalNow = 0;
+    var totalIntake = 0;
+
+    for (var i = 0; i < rows.length; i++) {
+      var inputs = rows[i].getElementsByTagName("input");
+      var t = new Date(inputs[0].value);
+      var mg = parseFloat(inputs[2].value);
+
+      if (isNaN(t.getTime()) || isNaN(mg) || mg <= 0) continue;
+
+      totalIntake += mg;
+
+      var diffMs = calcTime - t;
+      var diffHours = diffMs / 3600000;
+      if (diffHours < 0) continue;
+
+      var remaining = mg * Math.exp(-lambda * diffHours);
+      totalNow += remaining;
+    }
+
+    var resultBox = document.getElementById("resultBox");
+    var resultMain = document.getElementById("resultMain");
+    var resultDetail = document.getElementById("resultDetail");
+
+    resultBox.style.display = "block";
+    var roundedNow = Math.round(totalNow);
+    var roundedIntake = Math.round(totalIntake);
+
+    var tagHtml = "";
+    if (roundedNow > SAFE_THRESHOLD) {
+      tagHtml = '<span class="tag tag-warn">상한 초과 가능</span>';
+    } else if (roundedNow > SAFE_THRESHOLD * 0.75) {
+      tagHtml = '<span class="tag tag-warn">상한 근접</span>';
+    } else {
+      tagHtml = '<span class="tag tag-ok">상대적으로 여유</span>';
+    }
+
+    resultMain.innerHTML =
+      '현재 몸에 남은 카페인: <strong>' + roundedNow + ' mg</strong>' + tagHtml;
+
+    var detail =
+      '지금까지 섭취한 총량은 약 <strong>' +
+      roundedIntake +
+      ' mg</strong>이고, 반감기 ' +
+      halfLife.toFixed(1) +
+      '시간 기준으로 계산했어.';
+
+    if (roundedNow > SAFE_THRESHOLD) {
+      detail += '<br><span class="warn">일반적인 권장 상한(약 400 mg)을 넘어서 있으니까, 추가 섭취는 꽤 조심하는 게 좋겠다.</span>';
+    } else if (roundedNow > SAFE_THRESHOLD * 0.75) {
+      detail += '<br><span class="warn">상한에 꽤 가까워져 있어서, 오늘은 더 마시지 않는 쪽이 안전할 수 있어.</span>';
+    }
+
+    resultDetail.innerHTML = detail;
+  }
+
+  // 초기화
+  setCalcTimeNow();
+  addDoseRow();
+
+  document.getElementById("setNowBtn").onclick = setCalcTimeNow;
+  document.getElementById("addDoseBtn").onclick = function () { addDoseRow(); };
+  document.getElementById("calcBtn").onclick = calculateCaffeine;
+</script>
 </body>
 </html>

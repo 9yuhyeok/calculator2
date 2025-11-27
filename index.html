@@ -334,7 +334,7 @@
     /* 떠 있는 날짜 라벨 */
     .timeline-floating-date{
       position:absolute;
-      top:34px;     /* 시간 헤더 행과 비슷한 높이 */
+      top:34px;
       left:16px;
       padding:2px 10px;
       border-radius:999px;
@@ -344,6 +344,73 @@
       pointer-events:none;
       z-index:5;
       display:none;
+    }
+
+    .caffeine-section{
+      margin-top:10px;
+      padding:10px 4px 0;
+      font-size:0.8rem;
+      color:var(--text-muted);
+    }
+
+    .caffeine-title{
+      font-weight:600;
+      font-size:0.9rem;
+      margin-bottom:6px;
+      text-align:center;
+    }
+
+    .caffeine-table-wrap{
+      border-radius:12px;
+      overflow:hidden;
+      border:1px solid #e5e7eb;
+      background:#ffffff;
+    }
+
+    .caffeine-table{
+      width:100%;
+      border-collapse:collapse;
+      font-size:0.78rem;
+    }
+
+    .caffeine-table th,
+    .caffeine-table td{
+      padding:4px 6px;
+      border-bottom:1px solid #e5e7eb;
+      text-align:center;
+      white-space:nowrap;
+    }
+
+    .caffeine-table th{
+      background:#f3f4f6;
+      font-weight:500;
+      color:#6b7280;
+    }
+
+    .caffeine-table tr:last-child td{
+      border-bottom:none;
+    }
+
+    .caffeine-subheading td{
+      background:#f9fafb;
+      font-weight:600;
+      text-align:left;
+      padding-top:6px;
+    }
+
+    .caffeine-note{
+      margin-top:6px;
+      font-size:0.7rem;
+      color:#9ca3af;
+      text-align:right;
+    }
+
+    .signature{
+      margin-top:14px;
+      margin-bottom:10px;
+      font-size:0.8rem;
+      text-align:center;
+      color:#9ca3af;
     }
 
     /* 모바일 */
@@ -357,7 +424,6 @@
     @media (max-width:720px){
       .app-inner{ padding:16px 14px 14px; }
 
-      /* 섭취 기록만 카드 형태 */
       .dose-table thead{ display:none; }
 
       .dose-table tbody tr{
@@ -473,6 +539,137 @@
   </div>
 
   <div class="half-life-note">카페인 반감기 = 5시간으로 계산</div>
+
+  <div class="caffeine-section">
+    <div class="caffeine-title">주요 음료 및 커피 제품의 카페인 함량 (대략값)</div>
+    <div class="caffeine-table-wrap">
+      <table class="caffeine-table">
+        <thead>
+        <tr>
+          <th>제품</th>
+          <th>용량</th>
+          <th>카페인</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- 에너지드링크 -->
+        <tr class="caffeine-subheading">
+          <td colspan="3">에너지 드링크</td>
+        </tr>
+        <tr>
+          <td>몬스터 에너지 355ml</td>
+          <td>355&nbsp;ml</td>
+          <td>100&nbsp;mg</td>
+        </tr>
+        <tr>
+          <td>몬스터 에너지 500ml</td>
+          <td>500&nbsp;ml</td>
+          <td>200&nbsp;mg</td>
+        </tr>
+        <tr>
+          <td>핫식스 250ml</td>
+          <td>250&nbsp;ml</td>
+          <td>60&nbsp;mg</td>
+        </tr>
+        <tr>
+          <td>핫식스 355ml</td>
+          <td>355&nbsp;ml</td>
+          <td>100&nbsp;mg</td>
+        </tr>
+        <tr>
+          <td>핫식스 500ml</td>
+          <td>500&nbsp;ml</td>
+          <td>200&nbsp;mg</td>
+        </tr>
+        <tr>
+          <td>넷플릭스 에너지드링크</td>
+          <td>500&nbsp;ml</td>
+          <td>200-250&nbsp;mg</td>
+        </tr>
+
+        <!--캔커피 -->
+        <tr class="caffeine-subheading">
+          <td colspan="3">캔 커피</td>
+        </tr>
+        <tr>
+          <td>조지아 마운틴블랜드</td>
+          <td>270&nbsp;ml</td>
+          <td>160&nbsp;mg</td>
+        </tr>
+        <tr>
+          <td>조지아 오리지널</td>
+          <td>240&nbsp;ml</td>
+          <td>130&nbsp;mg</td>
+        </tr>
+        <tr>
+          <td>조지아 맥스커피</td>
+          <td>240&nbsp;ml</td>
+          <td>130&nbsp;mg</td>
+        </tr>
+        <tr>
+          <td>프렌치카페 에스프레소 골드</td>
+          <td>250&nbsp;ml</td>
+          <td>120&nbsp;mg</td>
+        </tr>
+
+        <!-- 스타벅스 아메리카노 -->
+        <tr class="caffeine-subheading">
+          <td colspan="3">스타벅스 카페 아메리카노 (1 shot = 75 mg)</td>
+        </tr>
+        <tr>
+          <td>Short</td>
+          <td>8oz</td>
+          <td>약 75&nbsp;mg</td>
+        </tr>
+        <tr>
+          <td>Tall</td>
+          <td>12oz</td>
+          <td>약 150&nbsp;mg</td>
+        </tr>
+        <tr>
+          <td>Grande</td>
+          <td>16oz</td>
+          <td>약 225&nbsp;mg</td>
+        </tr>
+        <tr>
+          <td>Venti</td>
+          <td>20oz</td>
+          <td>약 300&nbsp;mg</td>
+        </tr>
+
+        <!-- 스타벅스 라떼 -->
+        <tr class="caffeine-subheading">
+          <td colspan="3">스타벅스 카페 라떼 (1 shot = 75 mg)</td>
+        </tr>
+        <tr>
+          <td>Short</td>
+          <td>8oz</td>
+          <td>약 75&nbsp;mg</td>
+        </tr>
+        <tr>
+          <td>Tall</td>
+          <td>12oz</td>
+          <td>약 75&nbsp;mg</td>
+        </tr>
+        <tr>
+          <td>Grande</td>
+          <td>16oz</td>
+          <td>약 150&nbsp;mg</td>
+        </tr>
+        <tr>
+          <td>Venti</td>
+          <td>20oz</td>
+          <td>약 150&nbsp;mg</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="caffeine-note">
+      * 제조사·레시피·매장에 따라 실제 함량은 달라질 수 있음
+    </div>
+  </div>
+
+  <div class="signature">연세대학교 QRM 25 박규혁</div>
 </div>
 
 <script>
@@ -776,7 +973,7 @@
   function buildTimeline(doses){
     const wrapper = document.getElementById("timelineWrap");
     if(!doses.length){
-      wrapper.innerHTML = '<div class="timeline-empty">카페인 섭취를 추가하면 시간대별 타임라인이 표시됩니다.</div>';
+      wrapper.innerHTML = '<div class="timeline-empty">카페인 섭취를 추가하면 타임라인이 표시됩니다.</div>';
       const float = document.getElementById('timelineFloatingDate');
       if(float) float.style.display='none';
       return;
@@ -901,7 +1098,6 @@
     const wrapEl = document.getElementById('timelineWrap');
     const onScroll = () => updateFloatingDate(dateGroups, slots);
     wrapEl.onscroll = onScroll;
-    // 초기 상태에서도 한 번 업데이트
     updateFloatingDate(dateGroups, slots);
   }
 
